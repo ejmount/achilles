@@ -19,7 +19,7 @@ public class Dbutils {
 
 	private static final void listContext(Context ctx, String indent) {
 		try {
-			NamingEnumeration list = ctx.listBindings("");
+			NamingEnumeration<Binding> list = ctx.listBindings("");
 			while (list.hasMore()) {
 				Binding item = (Binding) list.next();
 				String className = item.getClassName();

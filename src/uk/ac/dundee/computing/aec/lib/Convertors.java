@@ -6,9 +6,6 @@ import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 
 public final class Convertors {
-	public void Convertors(){
-		
-	}
 	
 	public static java.util.UUID getTimeUUID()
     {

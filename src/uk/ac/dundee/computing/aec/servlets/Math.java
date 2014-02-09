@@ -17,7 +17,7 @@ import uk.ac.dundee.computing.aec.lib.*;
 @WebServlet({ "/Math", "/Math/*" })
 public class Math extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private HashMap CommandsMap = new HashMap();   
+	private HashMap<String,Integer> CommandsMap = new HashMap<String,Integer>();   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,8 +39,7 @@ public class Math extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Convertors ut = new Convertors();
-		String args[]=ut.SplitRequestPath(request);
+		String args[]= Convertors.SplitRequestPath(request);
 		response.setContentType("text/html");
 		//We are expecting /Math/Math/mult/1/2 or
 		// /Math/Math/root/24

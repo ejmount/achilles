@@ -23,7 +23,6 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
-import uk.ac.dundee.computing.aec.lib.*;
 import uk.ac.dundee.computing.aec.stores.TweetStore;
 public class TweetModel {
 	Cluster cluster;
