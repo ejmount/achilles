@@ -11,6 +11,10 @@ package uk.ac.dundee.computing.aec.models;
   ) WITH CLUSTERING ORDER BY (interaction_time DESC);
  * To manually generate a UUID use:
  * http://www.famkruithof.net/uuid/uuidgen
+ * 
+ * 
+ * 
+ * 
  */
 
 
@@ -23,6 +27,7 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
+import uk.ac.dundee.computing.aec.lib.Convertors;
 import uk.ac.dundee.computing.aec.stores.TweetStore;
 public class TweetModel {
 	Cluster cluster;
@@ -36,7 +41,7 @@ public class TweetModel {
 	
 	public LinkedList<TweetStore> getTweets() {
 		LinkedList<TweetStore> tweetList = new LinkedList<TweetStore>();
-		Session session = cluster.connect("keyspace2");
+		Session session = cluster.connect("twitter");
 
 		PreparedStatement statement = session.prepare("SELECT * from tweets");
 		BoundStatement boundStatement = new BoundStatement(statement);
@@ -48,6 +53,7 @@ public class TweetModel {
 				TweetStore ts = new TweetStore();
 				ts.setTweet(row.getString("tweet"));
 				ts.setUser(row.getString("user"));
+				ts.setData(Convertors.UUIDToDate(row.getUUID("interaction_time")));
 				tweetList.add(ts);
 			}
 		}

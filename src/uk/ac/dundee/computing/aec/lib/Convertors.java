@@ -1,9 +1,13 @@
 package uk.ac.dundee.computing.aec.lib;
 
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+ 
+
 
 public final class Convertors {
 	
@@ -104,6 +108,18 @@ public static String[] SplitTags(String Tags){
   		return new StringTokenizer (str,",");
 
   }
+  
+  static final int EPOCH_DIFFERENCE = 141427 /*days*/ * 24 /*hours*/ * 60 /*minutes*/ * 60 /* seconds */ * 1000;
+  
+  public static Date UUIDToDate(UUID u)
+  {
+	  long origTime = u.timestamp();
+	  long inMilliseconds = origTime / 10000;
+	  long since1970 = inMilliseconds - EPOCH_DIFFERENCE;
+	  
+	  return new Date(since1970);
+  }
+  
   
   public static String[] SplitRequestPath(HttpServletRequest request){
 		String args[] = null;

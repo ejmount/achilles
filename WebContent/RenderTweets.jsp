@@ -21,7 +21,7 @@ if (lTweet==null){
 }else{
 %>
 
-
+<table>
 <% 
 Iterator<TweetStore> iterator;
 
@@ -31,8 +31,12 @@ while (iterator.hasNext()){
 	TweetStore ts = (TweetStore)iterator.next();
 	
 	%>
-	<a href="/ac32007examples/Tweet/<%=ts.getUser() %>" ><%=ts.getTweet() %></a><br/><%
+	<tr><td><a href="/ac32007examples/Tweet/<%=ts.getUser() %>" ><%=ts.getUser() %></a></td>
+	<td rowspan="2"><%=ts.getTweet() %></a><br/></td>
+	</tr>
+	<tr><td><%=ts.getDate().toLocaleString() %></td></tr>
 	
+	<%
 }
 }
 %>
