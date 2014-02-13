@@ -31,7 +31,7 @@ while (iterator.hasNext()){
 	TweetStore ts = (TweetStore)iterator.next();
 	
 	%>
-	<tr><td><a href="/ac32007examples/Tweet/<%=ts.getUser() %>" ><%=ts.getUser() %></a></td>
+	<tr border="1"><td><a href="/ac32007examples/Tweet/<%=ts.getUser() %>" ><%=ts.getUser() %></a></td>
 	<td rowspan="2"><%=ts.getTweet() %></a><br/></td>
 	</tr>
 	<tr><td><%=ts.getDate().toLocaleString() %></td></tr>
@@ -40,6 +40,6 @@ while (iterator.hasNext()){
 }
 }
 %>
-
+</table>
 </body>
 </html>
