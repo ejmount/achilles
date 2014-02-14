@@ -18,6 +18,7 @@ package uk.ac.dundee.computing.aec.models;
  */
 
 
+import java.io.Console;
 import java.util.LinkedList;
 
 import com.datastax.driver.core.BoundStatement;
@@ -38,6 +39,20 @@ public class TweetModel {
 	public void setCluster(Cluster cluster){
 		this.cluster=cluster;
 	}
+	
+	public void postTweet(TweetStore T)
+	{
+		Session session = cluster.connect("twitter");
+		PreparedStatement statement = session.prepare("INSERT INTO tweets(user, tweet,interaction_time) VALUES(?, ?, now());");
+		BoundStatement boundStatement = new BoundStatement(statement);
+		
+		boundStatement.bind(T.getUser(), T.getTweet());
+		
+		session.execute(boundStatement);
+		
+	}
+	
+	
 	
 	public LinkedList<TweetStore> getTweets() {
 		LinkedList<TweetStore> tweetList = new LinkedList<TweetStore>();

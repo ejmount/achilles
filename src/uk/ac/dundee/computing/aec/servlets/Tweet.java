@@ -55,7 +55,27 @@ public class Tweet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		if (request.getParameter("name") == null ||
+				request.getParameter("tweet") == null)
+		{
+			response.setStatus(400);
+			request.setAttribute("error", "Invalid Request"); //Set a bean with the list in it
+			RequestDispatcher rd = request.getRequestDispatcher("/RenderError.jsp"); 
+
+			rd.forward(request, response);
+		}
+		
+		TweetModel tm = new TweetModel();
+		tm.setCluster(cluster);
+		TweetStore newT = new TweetStore();
+		newT.setUser(request.getParameter("name"));
+		newT.setTweet(request.getParameter("tweet"));
+				
+		tm.postTweet(newT);
+		
+		this.doGet(request, response);
+		
 	}
 
 }
