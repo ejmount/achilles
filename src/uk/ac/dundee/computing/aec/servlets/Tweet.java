@@ -1,5 +1,6 @@
 package uk.ac.dundee.computing.aec.servlets;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -42,15 +43,34 @@ public class Tweet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String args[]=Convertors.SplitRequestPath(request);
+		
 		TweetModel tm= new TweetModel();
 		tm.setCluster(cluster);
 		LinkedList<TweetStore> tweetList = tm.getTweets();
-		request.setAttribute("Tweets", tweetList); //Set a bean with the list in it
+		
+		if (args.length > 2) {
+			LinkedList<TweetStore> userList = new LinkedList<>();
+			String user = args[2].toLowerCase();
+			for(TweetStore tweet : tweetList )
+			{
+				if(user.equals(tweet.getUser().toLowerCase()))
+				userList.add(tweet);
+			}
+			request.setAttribute("Tweets", userList); //Set a bean with the list in it
+			
+		}
+		else {
+			request.setAttribute("Tweets", tweetList); //Set a bean with the list in it
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/RenderTweets.jsp"); 
 
 		rd.forward(request, response);
 	}
 
+	
+
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -60,7 +80,7 @@ public class Tweet extends HttpServlet {
 				request.getParameter("tweet") == null)
 		{
 			response.setStatus(400);
-			request.setAttribute("error", "Invalid Request"); //Set a bean with the list in it
+			request.setAttribute("error", "Invalid Request");
 			RequestDispatcher rd = request.getRequestDispatcher("/RenderError.jsp"); 
 
 			rd.forward(request, response);
