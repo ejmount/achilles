@@ -18,7 +18,6 @@ package uk.ac.dundee.computing.aec.models;
  */
 
 
-import java.io.Console;
 import java.util.LinkedList;
 
 import com.datastax.driver.core.BoundStatement;
@@ -49,7 +48,7 @@ public class TweetModel {
 		boundStatement.bind(T.getUser(), T.getTweet());
 		
 		session.execute(boundStatement);
-		
+		session.shutdown();
 	}
 	
 	

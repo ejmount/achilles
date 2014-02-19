@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import uk.ac.dundee.computing.aec.lib.Convertors;
+import uk.ac.dundee.computing.aec.models.AuthModel;
+import uk.ac.dundee.computing.aec.stores.UserStore;
+
 /**
  * Servlet implementation class Auth
  */
@@ -39,8 +43,34 @@ public class Auth extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 
+		String args[]=Convertors.SplitRequestPath(request);
 		
-		
+		if (args[args.length-1] == "login")
+		{
+			String usr = request.getParameter("username");
+			String pass = request.getParameter("password");
+			
+			UserStore user = AuthModel.VerifyPassword(usr, pass);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/login.jsp"); 
+			response.sendRedirect("/login.jsp");
+			
+			if (user != null){
+				request.getSession().setAttribute("user", user);
+			}
+			else {
+				
+			}
+		}
+		else if (args[args.length-1] == "logout")
+		{
+			
+		}
+		else {
+			request.setAttribute("error", "You triggered the auth handler without actually... authing.");
+			RequestDispatcher rd = request.getRequestDispatcher("/RenderError.jsp"); 
+			rd.forward(request, response);
+		}
 	}
 
 }
