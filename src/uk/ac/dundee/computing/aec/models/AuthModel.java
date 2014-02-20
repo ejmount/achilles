@@ -10,18 +10,21 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 
-abstract public class AuthModel {
+public class AuthModel {
 
-	static Cluster cluster;
+	Cluster cluster;
+	String ks;
 	
-	static void setCluster(Cluster C)
+	public AuthModel(Cluster C, String keyspace)
 	{
 		cluster = C;
+		ks = keyspace;
 	}
+
 	
-	public static void RegisterUser(UserStore U)
+	public void RegisterUser(UserStore U)
 	{
-		Session session = cluster.connect("twitter");
+		Session session = cluster.connect(ks);
 		PreparedStatement statement = session.prepare("INSERT INTO users(username, pass,admin,emails) VALUES(?,?,false,NULL) IF NOT EXISTS;");
 		BoundStatement boundStatement = new BoundStatement(statement);
 		
@@ -30,7 +33,7 @@ abstract public class AuthModel {
 		session.execute(boundStatement);
 	}
 	
-	public static UserStore VerifyPassword(String username, String password)
+	public UserStore VerifyPassword(String username, String password)
 	{
 		if (username == null || password == null)
 			return null;
@@ -41,7 +44,7 @@ abstract public class AuthModel {
 		// Assume there's only one user by any given name
 		BoundStatement boundStatement = new BoundStatement(statement);
 		
-		boundStatement.bind(username, password); 
+		boundStatement.bind(username); 
 		
 		ResultSet res = session.execute(boundStatement);
 		Row r = res.one(); 
