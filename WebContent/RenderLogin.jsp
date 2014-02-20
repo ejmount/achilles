@@ -21,9 +21,9 @@ if (use != null)
 }
 %>
 <form action="login" method="post">
-Username: <input name="username" />
-Password: <input name="password" />
-<button type="submit" />
+Username: <input name="username" /><br />
+Password: <input name="password" /><br />
+<input type="submit" value="Submit" />
 </form>
 </body>
 </html>

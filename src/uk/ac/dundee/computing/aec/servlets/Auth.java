@@ -70,14 +70,40 @@ public class Auth extends HttpServlet {
 	protected void handleLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		System.err.print("Enter logout");
-		request.getSession().setAttribute("user", null);
-		request.setAttribute("message", "If you were logged in, you are now logged out.");
+		
+		request.setAttribute("message", "");
+		if (request.getSession().getAttribute("user") != null) 
+		{
+			request.setAttribute("message", "If you were logged in, you are now logged out.");
+			request.getSession().setAttribute("user", null);
+		}
 		RequestDispatcher rd = request.getRequestDispatcher("/RenderLogin.jsp"); 
 		rd.forward(request, response);
 	}
 	
-	protected void handleRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void handleRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
+		String usr = request.getParameter("username");
+		String pass = request.getParameter("password");
 		
+		if (usr != null && pass != null && !usr.isEmpty() && !pass.isEmpty()  ) {
+	
+			AuthModel auth = new AuthModel(CassandraHosts.getCluster(), "twitter");
+		
+			UserStore U = new UserStore();
+			U.setUsername(usr);
+			U.setPassword(pass);
+			
+			auth.RegisterUser(U);
+		}
+		else {
+			request.setAttribute("error", "Invalid register request");
+			RequestDispatcher rd = request.getRequestDispatcher("/RenderError.jsp"); 
+			rd.forward(request, response);
+		}
+		
+		handleLogin(request, response); // Logging in with the username/pass we just registerd *should* work correctly 
+										// and leave the user logged in.
 	}
 	
 	
@@ -87,23 +113,14 @@ public class Auth extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 
 		String args[]=Convertors.SplitRequestPath(request);
-		for(int i = 0; i < args.length; i++)
-		{
-			System.err.print(args[i]);
-		}
-		
 		
 		if (args[args.length-1].equals("login"))
 		{
 			handleLogin(request, response);
 		}
-		else if (args[args.length-1].equals("logout"))
-		{
-			handleLogout(request, response);
-		}
 		else if (args[args.length-1].equals("register"))
 		{
-			
+			handleRegister(request, response);
 		}
 		else {
 			request.setAttribute("error", "You triggered the auth handler without actually... authing.");
