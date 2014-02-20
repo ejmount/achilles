@@ -33,9 +33,15 @@ public class Auth extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/RenderLogin.jsp"); 
-		rd.forward(request, response);
+		String args[]=Convertors.SplitRequestPath(request);
+		if (args[args.length-1].equals("logout"))
+		{
+			handleLogout(request, response);
+		}
+		else {
+			RequestDispatcher rd = request.getRequestDispatcher("/RenderLogin.jsp"); 
+			rd.forward(request, response);
+		}
 	}
 
 	
@@ -63,6 +69,7 @@ public class Auth extends HttpServlet {
 	
 	protected void handleLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
+		System.err.print("Enter logout");
 		request.getSession().setAttribute("user", null);
 		request.setAttribute("message", "If you were logged in, you are now logged out.");
 		RequestDispatcher rd = request.getRequestDispatcher("/RenderLogin.jsp"); 
@@ -80,6 +87,11 @@ public class Auth extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 
 		String args[]=Convertors.SplitRequestPath(request);
+		for(int i = 0; i < args.length; i++)
+		{
+			System.err.print(args[i]);
+		}
+		
 		
 		if (args[args.length-1].equals("login"))
 		{
