@@ -1,6 +1,7 @@
 package uk.ac.dundee.computing.aec.models;
 
 
+import uk.ac.dundee.computing.aec.lib.Keyspaces;
 import uk.ac.dundee.computing.aec.stores.UserStore;
 
 import com.datastax.driver.core.BoundStatement;
@@ -13,18 +14,16 @@ import com.datastax.driver.core.Row;
 public class AuthModel {
 
 	Cluster cluster;
-	String ks;
 	
-	public AuthModel(Cluster C, String keyspace)
+	public AuthModel(Cluster C)
 	{
 		cluster = C;
-		ks = keyspace;
 	}
 
 	
 	public void RegisterUser(UserStore U)
 	{
-		Session session = cluster.connect(ks);
+		Session session = cluster.connect(Keyspaces.keySpaceName);
 		PreparedStatement statement = session.prepare("INSERT INTO users(username, pass,admin,emails) VALUES(?,?,false,NULL) IF NOT EXISTS;");
 		BoundStatement boundStatement = new BoundStatement(statement);
 		
@@ -38,7 +37,7 @@ public class AuthModel {
 		if (username == null || password == null)
 			return null;
 		
-		Session session = cluster.connect("twitter");		
+		Session session = cluster.connect(Keyspaces.keySpaceName);		
 		
 		PreparedStatement statement = session.prepare("SELECT * from users WHERE username=? LIMIT 1"); 
 		// Assume there's only one user by any given name

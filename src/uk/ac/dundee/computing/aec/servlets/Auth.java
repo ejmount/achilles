@@ -50,7 +50,7 @@ public class Auth extends HttpServlet {
 		String pass = request.getParameter("password");
 		
 		if (usr != null && pass != null && !usr.isEmpty() && !pass.isEmpty()  ) {
-			AuthModel auth = new AuthModel(CassandraHosts.getCluster(), "twitter");
+			AuthModel auth = new AuthModel(CassandraHosts.getCluster());
 						
 			UserStore user = auth.VerifyPassword(usr, pass);
 			
@@ -88,7 +88,7 @@ public class Auth extends HttpServlet {
 		
 		if (usr != null && pass != null && !usr.isEmpty() && !pass.isEmpty()  ) {
 	
-			AuthModel auth = new AuthModel(CassandraHosts.getCluster(), "twitter");
+			AuthModel auth = new AuthModel(CassandraHosts.getCluster());
 		
 			UserStore U = new UserStore();
 			U.setUsername(usr);
