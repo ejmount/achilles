@@ -23,10 +23,12 @@ while (iterator.hasNext()){
 	
 	%>
 	<tr>
-	<td><a href="/ac32007examples/Tweet/<%=ts.getUser() %>" ><%=ts.getUser() %></a></td>
-	<td><%=ts.getDate().toString() %></td>
+	<td colspan=2><%=ts.getDate().toString() %></td>
 	</tr>
-	<tr><td colspan="2"><%=ts.getTweet() %><br/></td></tr>
+	<tr>
+	<td><a href="/ac32007examples/Tweet/<%=ts.getUser() %>" ><%=ts.getUser() %></a></td>
+	<td><%=ts.getTweet() %><br/></td>
+	</tr>
 	
 	<%
 }
