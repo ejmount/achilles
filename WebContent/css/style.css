@@ -1,0 +1,16 @@
+@CHARSET "ISO-8859-1";
+
+body {
+	font-family: Courier New, monospace;
+	background: #000000;
+	color: #00A000;	
+}
+input { 
+   	background-color: #000000; 
+    border: solid 1px #00FF00; 
+    outline: none; 
+    padding: 2px 2px;
+    color: #00FF00; 
+  } 
+  
+  

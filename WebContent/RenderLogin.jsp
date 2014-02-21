@@ -1,13 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>    
-    <%@ page import="uk.ac.dundee.computing.aec.stores.UserStore" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>    
+<%@ page import="uk.ac.dundee.computing.aec.stores.UserStore" %>
+<%@include file="header.jsp" %>
 
 <%
 String msg = (String)request.getAttribute("message");
@@ -20,10 +13,22 @@ if (use != null)
 	%>You are logged in as: <%=use.getUsername() %><br><%
 }
 %>
-<form action="login" method="post">
-Username: <input name="username" /><br />
-Password: <input name="password" /><br />
-<input type="submit" value="Submit" />
-</form>
+<div >
+	<form action="login" method="post">
+	Username: <input name="username" class="textbox" /><br />
+	Password: <input name="password" class="textbox" /><br />
+	<br />
+	<input type="submit" value="Submit" />
+	</form>
+</div>
+<div style="position:relative; left:+100px;">
+	<form action="register" method="post">
+	Username: <input name="username" class="textbox" /><br />
+	Password: <input name="password" class="textbox" /><br />
+	Email: <input name="email" class="textbox" /><br />
+	<br />
+	<input type="submit" value="Register" />
+	</form>
+</div>
 </body>
 </html>
