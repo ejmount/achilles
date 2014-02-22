@@ -2,6 +2,8 @@ package uk.ac.dundee.computing.aec.servlets;
 
 import java.io.Console;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import javax.servlet.RequestDispatcher;
@@ -47,6 +49,7 @@ public class Tweet extends HttpServlet {
 		TweetModel tm= new TweetModel();
 		tm.setCluster(cluster);
 		LinkedList<TweetStore> tweetList = tm.getTweets();
+		Collections.sort(tweetList);
 		
 		if (args.length > 2) {
 			LinkedList<TweetStore> userList = new LinkedList<>();

@@ -29,7 +29,7 @@ while (iterator.hasNext()){
 	<td><a href="/ac32007examples/Tweet/<%=ts.getUser() %>" ><%=ts.getUser() %></a></td>
 	<td><%=ts.getTweet() %><br/></td>
 	</tr>
-	
+	<tr style="min-height:10px;"></tr>
 	<%
 }
 }

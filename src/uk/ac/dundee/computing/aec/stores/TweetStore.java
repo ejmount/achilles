@@ -1,8 +1,9 @@
 package uk.ac.dundee.computing.aec.stores;
 
 import java.util.Date;
+//import java.lang
 
-public class TweetStore {
+public class TweetStore implements Comparable<TweetStore> {
      String Tweet;
      String User;
      Date timestamp; 
@@ -26,6 +27,11 @@ public class TweetStore {
      }
      public void setData(Date d){
     	 this.timestamp = d;
+     }
+     
+     public int compareTo(TweetStore T)
+     {
+    	 return this.timestamp.compareTo(T.timestamp);
      }
      
 }

@@ -28,6 +28,7 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
 import uk.ac.dundee.computing.aec.lib.Convertors;
+import uk.ac.dundee.computing.aec.lib.Keyspaces;
 import uk.ac.dundee.computing.aec.stores.TweetStore;
 public class TweetModel {
 	Cluster cluster;
@@ -41,7 +42,7 @@ public class TweetModel {
 	
 	public void postTweet(TweetStore T)
 	{
-		Session session = cluster.connect("twitter");
+		Session session = cluster.connect(Keyspaces.keySpaceName);
 		PreparedStatement statement = session.prepare("INSERT INTO tweets(user, tweet,interaction_time) VALUES(?, ?, now());");
 		BoundStatement boundStatement = new BoundStatement(statement);
 		
@@ -55,7 +56,7 @@ public class TweetModel {
 	
 	public LinkedList<TweetStore> getTweets() {
 		LinkedList<TweetStore> tweetList = new LinkedList<TweetStore>();
-		Session session = cluster.connect("twitter");
+		Session session = cluster.connect(Keyspaces.keySpaceName);
 
 		PreparedStatement statement = session.prepare("SELECT * from tweets");
 		BoundStatement boundStatement = new BoundStatement(statement);
