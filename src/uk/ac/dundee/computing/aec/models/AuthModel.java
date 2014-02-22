@@ -4,6 +4,8 @@ package uk.ac.dundee.computing.aec.models;
 import uk.ac.dundee.computing.aec.lib.Keyspaces;
 import uk.ac.dundee.computing.aec.stores.UserStore;
 
+import java.util.LinkedList;
+
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.PreparedStatement;
@@ -24,7 +26,7 @@ public class AuthModel {
 	public void RegisterUser(UserStore U)
 	{
 		Session session = cluster.connect(Keyspaces.keySpaceName);
-		PreparedStatement statement = session.prepare("INSERT INTO users(username, pass,admin,emails) VALUES(?,?,false,NULL) IF NOT EXISTS;");
+		PreparedStatement statement = session.prepare("INSERT INTO users(username,pass,admin,email) VALUES(?,?,false,NULL) IF NOT EXISTS;");
 		BoundStatement boundStatement = new BoundStatement(statement);
 		
 		boundStatement.bind(U.getUsername(), U.getPassword()); 
@@ -56,6 +58,8 @@ public class AuthModel {
 				U.setUsername(username);
 				U.setPassword(password);
 				U.setAdmin(r.getBool("admin"));
+				U.setEmail(r.getString("email"));
+				U.setFollowers(new LinkedList( r.getSet("following", String.class)));
 				return U;
 			}
 		}

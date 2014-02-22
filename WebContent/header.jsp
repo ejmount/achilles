@@ -13,6 +13,6 @@
 <% UserStore use =(UserStore) request.getSession().getAttribute("user");
 if (use != null)
 {
-	%>You are logged in as: <%=use.getUsername() %><br><%
+	%>You are logged in as: <%=use.isAdmin() ? "<u>" : "" %> <%=use.getUsername() %><%=use.isAdmin() ? "</u>" : "" %><br><%
 }%>
 <hr />
