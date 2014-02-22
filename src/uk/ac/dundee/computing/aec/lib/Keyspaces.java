@@ -15,7 +15,7 @@ public final class Keyspaces {
 	public static void SetUpKeySpaces(Cluster c){
 		try{
 		
-			String ks = "CREATE KEYSPACE " + keySpaceName + " WITH replication = {'class': 'SimpleStrategy','replication_factor': '3'};";
+			String ks = "CREATE KEYSPACE " + keySpaceName + " WITH replication = {'class': 'SimpleStrategy','replication_factor': '1'};";
 			String tweets = "CREATE COLUMNFAMILY tweets (user text, interaction_time timeuuid, tweet text, PRIMARY KEY (interaction_time));";
 			String users = "CREATE COLUMNFAMILY users (username text, admin boolean, email text, pass text, following set<text>, PRIMARY KEY (username));";
 			String buildAdmin = "INSERT INTO users (username, admin, email, pass) VALUES('admin', true, '','qwe1');";

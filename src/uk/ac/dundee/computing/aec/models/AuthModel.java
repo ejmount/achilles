@@ -26,10 +26,10 @@ public class AuthModel {
 	public void RegisterUser(UserStore U)
 	{
 		Session session = cluster.connect(Keyspaces.keySpaceName);
-		PreparedStatement statement = session.prepare("INSERT INTO users(username,pass,admin,email) VALUES(?,?,false,NULL) IF NOT EXISTS;");
+		PreparedStatement statement = session.prepare("INSERT INTO users(username,pass,admin,email) VALUES(?,?,false,?) IF NOT EXISTS;");
 		BoundStatement boundStatement = new BoundStatement(statement);
 		
-		boundStatement.bind(U.getUsername(), U.getPassword()); 
+		boundStatement.bind(U.getUsername(), U.getPassword(), U.getEmail()); 
 		
 		session.execute(boundStatement);
 	}
@@ -59,7 +59,7 @@ public class AuthModel {
 				U.setPassword(password);
 				U.setAdmin(r.getBool("admin"));
 				U.setEmail(r.getString("email"));
-				U.setFollowers(new LinkedList( r.getSet("following", String.class)));
+				U.setFollowers(new LinkedList<String>( r.getSet("following", String.class)));
 				return U;
 			}
 		}

@@ -85,14 +85,19 @@ public class Auth extends HttpServlet {
 	{
 		String usr = request.getParameter("username");
 		String pass = request.getParameter("password");
+		String email = request.getParameter("email");
 		
 		if (usr != null && pass != null && !usr.isEmpty() && !pass.isEmpty()  ) {
 	
 			AuthModel auth = new AuthModel(CassandraHosts.getCluster());
 		
+			String sanUser = usr.replace("<", "&lt;").replace(">", "&gt;");
+			
+			
 			UserStore U = new UserStore();
-			U.setUsername(usr);
+			U.setUsername(sanUser);
 			U.setPassword(pass);
+			U.setEmail(email);
 			
 			auth.RegisterUser(U);
 		}
@@ -102,7 +107,7 @@ public class Auth extends HttpServlet {
 			rd.forward(request, response);
 		}
 		
-		handleLogin(request, response); // Logging in with the username/pass we just registerd *should* work correctly 
+		handleLogin(request, response); // Logging in with the username/pass we just registered *should* work correctly 
 										// and leave the user logged in.
 	}
 	
