@@ -23,7 +23,7 @@ import uk.ac.dundee.computing.aec.stores.*;
 /**
  * Servlet implementation class Tweet
  */
-@WebServlet({ "/Tweet", "/Tweet/*" })
+@WebServlet({"/", "/tweet", "/tweet/*" })
 public class Tweet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Cluster cluster;
@@ -50,6 +50,7 @@ public class Tweet extends HttpServlet {
 		tm.setCluster(cluster);
 		LinkedList<TweetStore> tweetList = tm.getTweets();
 		Collections.sort(tweetList);
+		Collections.reverse(tweetList);
 		
 		if (args.length > 2) {
 			LinkedList<TweetStore> userList = new LinkedList<>();
@@ -79,26 +80,29 @@ public class Tweet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if (request.getParameter("name") == null ||
-				request.getParameter("tweet") == null)
+		UserStore u = (UserStore)request.getSession().getAttribute("user"); 
+		
+		if (u == null 
+			|| request.getParameter("tweet") == null
+			|| request.getParameter("tweet").isEmpty()) 
 		{
-			response.setStatus(400);
+			response.setStatus(403);
 			request.setAttribute("error", "Invalid Request");
 			RequestDispatcher rd = request.getRequestDispatcher("/RenderError.jsp"); 
 
 			rd.forward(request, response);
 		}
-		
-		TweetModel tm = new TweetModel();
-		tm.setCluster(cluster);
-		TweetStore newT = new TweetStore();
-		newT.setUser(request.getParameter("name"));
-		newT.setTweet(request.getParameter("tweet"));
-				
-		tm.postTweet(newT);
-		
-		this.doGet(request, response);
-		
+		else {
+			TweetModel tm = new TweetModel();
+			tm.setCluster(cluster);
+			TweetStore newT = new TweetStore(); 
+			newT.setUser(u.getUsername());
+			newT.setTweet(request.getParameter("tweet").replace("<", "&lt;").replace(">", "&gt;"));
+					
+			tm.postTweet(newT);
+			
+			this.doGet(request, response);
+		}
 	}
 
 }

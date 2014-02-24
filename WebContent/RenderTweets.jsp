@@ -3,7 +3,6 @@
 <%@include file="header.jsp" %>
 <h1>Tweet</h1>
 <%
-System.out.println("In render");
 List<TweetStore> lTweet = (List<TweetStore>)request.getAttribute("Tweets");
 if (lTweet==null){
  %>
@@ -35,14 +34,15 @@ while (iterator.hasNext()){
 }
 %>
 </table>
+
+<% if (request.getSession().getAttribute("user") != null ) { %>
 <form action="Tweet" method="post">
 <table>
-<tr><td>Name:</td><td><input name="name" type="text" maxlength=50 /></td></tr>
 <tr><td>Text:</td><td><input name="tweet" maxlength="280" />
 <tr><td><BUTTON name="submit" type="submit">Submit</BUTTON></td></tr>
 </table>
 </form>
-
+<% } %>
 
 </body>
 </html>
